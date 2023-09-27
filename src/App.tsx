@@ -10,7 +10,7 @@ const Modal = ({
   children: ReactNode;
 }) => {
   return (
-    <div className="fixed top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] min-w-[300px] min-h-[200px] bg-blue-800 p-10">
+    <div className="fixed top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] min-w-[300px] min-h-[200px] bg-blue-800 p-10 flex justify-center items-center">
       <div
         className="absolute right-2 top-2 border rounded-full w-2 h-2 flex justify-center items-center cursor-pointer hover:scale-110 p-4"
         onClick={onClose}
@@ -43,7 +43,9 @@ function App() {
         {isOpen && (
           <Modal onClose={handleCloseModal}>
             {/* <Stepper /> */}
-            <TestStepper />
+            <div className="w-[900px]">
+              <TestStepper />
+            </div>
           </Modal>
         )}
         <button onClick={handleOpenModal}>open modal</button>
