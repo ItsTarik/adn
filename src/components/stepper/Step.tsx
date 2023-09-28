@@ -20,7 +20,8 @@ export const Step = (props: any) => {
       stepIndex={stepIndex}
       indexes={indexes}
       navigateToStep={navigateToStep}
-      showProgress={name !== "finalStep"}
+      // showProgress={name !== "finalStep"}
+      showProgress
       // stepsState={stepsState}
       progress={progress}
     >

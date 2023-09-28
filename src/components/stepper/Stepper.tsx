@@ -3,6 +3,7 @@
 import React, { useReducer } from "react";
 
 import { parseSteps } from "./helpers";
+import { twMerge } from "tailwind-merge";
 
 function reducer(state: any, action: any) {
   switch (action.type) {
@@ -16,7 +17,6 @@ function reducer(state: any, action: any) {
       return { ...state, submitter: action.submitter, isValid: action.isValid };
 
     case "SET_ISVALID":
-      console.log("SET_ISVALID", action);
       return { ...state, isValid: action.isValid };
 
     default:
@@ -112,18 +112,28 @@ const Stepper = (props: any) => {
     return (
       <div className="fixed right-3 bottom-2 flex">
         <div className="mr-3">
-          <button onClick={previousStep} disabled={currentStep === 0}>
+          <button
+            className={twMerge(
+              "text-white rounded-sm border-white p-1 border-2",
+              currentStep === 0 && "cursor-not-allowed"
+            )}
+            onClick={previousStep}
+            disabled={currentStep === 0}
+          >
             Précédent
           </button>
         </div>
 
-        <div className="mr-3">
+        <div className="mr-6">
           <button
+            className={twMerge(
+              "text-white rounded-sm border-white p-1 border-2",
+              !isThereMoreSteps && "cursor-not-allowed"
+            )}
             onClick={async () => {
               if (stepName === "step3-1") {
                 return navigateToStep(11);
               }
-              console.log("state", state);
               state.submitter();
               state.isValid && setSubmitting(true);
             }}
@@ -139,11 +149,12 @@ const Stepper = (props: any) => {
   };
 
   return (
-    <section className="flex border-4 border-lime-300">
+    <section className="flex border-4 border-lime-300 mb-2">
       <StepContext.Provider value={{ setSubmitter, setShowControls }}>
         {steps[currentStep]}
       </StepContext.Provider>
-      {currentStep + 1 !== steps.length && renderStepControl(state.submitting)}
+      {renderStepControl(state.submitting)}
+      {/* {currentStep + 1 !== steps.length && renderStepControl(state.submitting)} */}
     </section>
   );
 };
