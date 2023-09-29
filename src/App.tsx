@@ -1,6 +1,6 @@
+import Stepper from "./components/adnStepper";
 import "./index.css";
 import { ReactNode, useCallback, useState } from "react";
-import { TestStepper } from "./components/TestStepper";
 
 const Modal = ({
   onClose,
@@ -22,17 +22,6 @@ const Modal = ({
   );
 };
 
-const Stepper = () => {
-  return (
-    <div className="border-2 border-yellow-500 h-full flex flex-col">
-      <div className="flex justify-around mt-auto border-black border-2">
-        <button className="border">prev</button>
-        <button className="border">next</button>
-      </div>
-    </div>
-  );
-};
-
 function App() {
   const [isOpen, setIsOpen] = useState(false);
   const handleCloseModal = useCallback(() => setIsOpen(false), []);
@@ -44,7 +33,7 @@ function App() {
           <Modal onClose={handleCloseModal}>
             {/* <Stepper /> */}
             <div className="w-[900px]">
-              <TestStepper />
+              <Stepper />
             </div>
           </Modal>
         )}
