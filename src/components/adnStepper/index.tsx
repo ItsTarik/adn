@@ -1,8 +1,17 @@
-import React from "react";
+import React, {
+  PropsWithChildren,
+  ReactChild,
+  ReactComponentElement,
+  ReactElement,
+  ReactNode,
+  useContext,
+} from "react";
 import { StepperProgress } from "../stepper/shared";
 import { Step1 } from "./steps/step1";
 import { Step2 } from "./steps/step2";
 import { Step3 } from "./steps/step3";
+import { Step4 } from "./steps/step4";
+import { Step5 } from "./steps/step5";
 
 type Steps = {
   step1: {
@@ -20,6 +29,8 @@ export enum StepsEnum {
   STEP_1 = 1,
   STEP_2 = 2,
   STEP_3 = 3,
+  STEP_4 = 4,
+  STEP_5 = 5,
 }
 
 const stepperInitialValue = {
@@ -40,6 +51,40 @@ export const StepContext = React.createContext<{
   setStepperState: () => ({}),
 });
 
+const Slider = ({ children }: { children: ReactElement[] }) => {
+  const childrenArray = React.Children.toArray(children);
+  const slidesWithIndex = childrenArray.reduce((acc, child, index) => {
+    return [...acc, { ...child, props: { ...child.props, index } }];
+  }, []);
+
+  return <div className="flex overflow-hidden">{slidesWithIndex}</div>;
+};
+
+const Slide = ({
+  children,
+  index = 0,
+}: {
+  children: ReactNode;
+  index?: number;
+}) => {
+  const { currentStep } = useContext(StepContext);
+  const isActive = currentStep === index + 1;
+  const percent = -(currentStep - 1) * 100;
+
+  return (
+    <div
+      className="w-full shrink-0 border-dotted border-blue-200 border-2 transition-all duration-1000"
+      style={{
+        transform: `translateX(${percent}%)`,
+        opacity: isActive ? 1 : 0,
+        // display: Math.abs(currentStep - index) > 1 && "none",
+      }}
+    >
+      {children}
+    </div>
+  );
+};
+
 const Stepper = () => {
   const [currentStep, setCurrentStep] = React.useState(StepsEnum.STEP_1);
   const [stepperState, setStepperState] = React.useState(stepperInitialValue);
@@ -47,7 +92,7 @@ const Stepper = () => {
   return (
     <section className="flex flex-col space-y-3 border-4 border-lime-300 mb-2">
       <pre className="bg-slate-50 w-full">
-        {JSON.stringify(stepperState, null, 4)}
+        {/* {JSON.stringify(stepperState, null, 4)} */}
       </pre>
       <StepContext.Provider
         value={{
@@ -57,11 +102,32 @@ const Stepper = () => {
           setStepperState,
         }}
       >
-        <div className="space-y-2">
+        <div className="spadce-y-2">
           <StepperProgress<StepsEnum> currentStep={currentStep} />
-          {currentStep === StepsEnum.STEP_1 && <Step1 />}
-          {currentStep === StepsEnum.STEP_2 && <Step2 />}
-          {currentStep === StepsEnum.STEP_3 && <Step3 />}
+          <div className="bg-slate-200 rounded-sm m-4 p-4">
+            <Slider>
+              <Slide>
+                <Step1 />
+              </Slide>
+              <Slide>
+                <Step2 />
+              </Slide>
+              <Slide>
+                <Step3 />
+              </Slide>
+              <Slide>
+                <Step4 />
+              </Slide>
+              <Slide>
+                <Step5 />
+              </Slide>
+            </Slider>
+            {/* {currentStep === StepsEnum.STEP_1 && <Step1 />}
+            {currentStep === StepsEnum.STEP_2 && <Step2 />}
+            {currentStep === StepsEnum.STEP_3 && <Step3 />}
+            {currentStep === StepsEnum.STEP_4 && <Step4 />}
+            {currentStep === StepsEnum.STEP_5 && <Step5 />} */}
+          </div>
         </div>
       </StepContext.Provider>
     </section>
