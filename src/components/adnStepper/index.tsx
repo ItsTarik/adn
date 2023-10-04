@@ -5,6 +5,7 @@ import React, {
   ReactElement,
   ReactNode,
   useContext,
+  useState,
 } from "react";
 import { StepperProgress } from "../stepper/shared";
 import { Step1 } from "./steps/step1";
@@ -88,12 +89,16 @@ const Slide = ({
 const Stepper = () => {
   const [currentStep, setCurrentStep] = React.useState(StepsEnum.STEP_1);
   const [stepperState, setStepperState] = React.useState(stepperInitialValue);
+  const [toggleAnimation, setToggleAnimation] = useState(false);
 
   return (
     <section className="flex flex-col space-y-3 border-4 border-lime-300 mb-2">
       <pre className="bg-slate-50 w-full">
         {/* {JSON.stringify(stepperState, null, 4)} */}
       </pre>
+      <button onClick={() => setToggleAnimation((t) => !t)}>
+        toggle animation
+      </button>
       <StepContext.Provider
         value={{
           state: stepperState,
@@ -103,7 +108,10 @@ const Stepper = () => {
         }}
       >
         <div className="spadce-y-2">
-          <StepperProgress<StepsEnum> currentStep={currentStep} />
+          <StepperProgress<StepsEnum>
+            currentStep={currentStep}
+            toggleAnimation={toggleAnimation}
+          />
           <div className="bg-slate-200 rounded-sm m-4 p-4">
             <Slider>
               <Slide>
