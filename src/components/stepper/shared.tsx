@@ -12,28 +12,31 @@ export const StepperProgress = <T,>({
   return (
     <ul
       className={twMerge(
-        "flex list-none justify-between relative overflow-hidden pl-0",
-        "before:content-[''] before:h-1 before:w-full before:absolute before:bg-[#495057] before:top-[50%] before:left-0 before:z-[-1] before:transition-all duration-[3000ms]",
-        toggleAnimation &&
-          "justify-center before:opacity-0 before:h-0 before:w-0"
-        // !toggleAnimation && "before:w-full"
+        "flex list-none justify-center relative overflow-hidden pl-0 space-x-20 ease-in",
+        toggleAnimation && "before:opacity-0 before:h-0 before:w-0 space-x-0"
       )}
     >
       {[...Array(nbr).keys()].map((_, index) => {
         return (
           <li
             className={twMerge(
-              "whitespace-nowrap border-8 border-blue-800 flex text-white font-bold rounded-full bg-slate-400 relative text-center w-20 h-20 justify-center items-center transition-all duration-[300ms]",
-              currentStep === index + 1 && "bg-lime-400",
-              toggleAnimation &&
-                index > 0 &&
-                "opacity-0 kw-0 jh-0 translakte-y-[100%] collapse text-blue-800"
+              "whitespace-nowrap p-2 relative bkorder-8 border-blue-800 flex text-white font-bold rounded-full bg-blue-800 text-center w-20 h-20 justify-center items-center transition-all duration-[300ms]",
+              "after:content-[''] after:h-1 after:w-full after:absolute after:bg-gray-500 after:top-[50%] after:right-full after:z-[-1] after:first:hidden",
+              toggleAnimation && index > 0 && "collapse"
             )}
             key={index}
           >
-            <button>
-              <b>{index + 1}</b>
-            </button>
+            <div
+              className={twMerge(
+                "flex bg-red-800 w-full h-full rounded-full justify-center items-center transition-all duration-[300ms]",
+                currentStep === index + 1 && "bg-lime-400",
+                toggleAnimation && index > 0 && "bg-blue-800 text-blue-800"
+              )}
+            >
+              <button className="z-50">
+                <b>{index + 1}</b>
+              </button>
+            </div>
           </li>
         );
       })}
